@@ -33,7 +33,9 @@ void setup()
   Serial.begin(9600);
   pinMode(ON_BOARD_LED, OUTPUT);
   pinMode(FADING_LED, OUTPUT);
-  
+ }
+
+void loop() { 
   Serial.println("Hello! enter two bytes and an operator (+,-,*,/).");
 
   uint8_t A, B;
@@ -75,13 +77,10 @@ void setup()
     case MODE_FADING:
       digitalWrite(ON_BOARD_LED, LOW);
       analogWrite(FADING_LED, res);
+    Serial.println(res);
       break;
     default:
       Serial.println("Invalid mode");
       break;
     }
- }
-
-void loop() { 
-  // put your main code here, to run repeatedly:
 }
