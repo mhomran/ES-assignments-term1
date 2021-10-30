@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include "XantoI2C.h"
 
-#define SLAVE_ADDR 0x14
+#define SLAVE_ADDR 120
 #define WRITE_DATA 0
 
 const uint8_t PIN_SCL = 2;
@@ -10,10 +10,12 @@ const uint8_t PIN_SDA = 3;
 XantoI2C i2c(PIN_SCL, PIN_SDA, 20);
 
 void sendSomeCommand() {
+  bool ack;
   i2c.start();
-  i2c.writeByte((SLAVE_ADDR << 1) | WRITE_DATA);
-  i2c.writeByte('H');
-  i2c.writeByte('i');
+  ack = i2c.writeByte((SLAVE_ADDR << 1) | WRITE_DATA);
+  if(ack) ack = i2c.writeByte(0x09);
+  if(ack) ack = i2c.writeByte(0xFE);
+  if(ack) ack = i2c.writeByte(0x23);
   i2c.stop();
 }
 

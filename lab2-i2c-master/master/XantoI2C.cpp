@@ -84,10 +84,10 @@ bool XantoI2C::getAck(void)
   if (getSda() == HIGH)
   {
     sclLo();
-    return true; // Error - No ack from Slave
+    return false; // Error - No ack from Slave
   }
   sclLo();
-  return false; // OK - Slave issued ack
+  return true; // OK - Slave issued ack
 }
 
 // TODO : write a byte using SDA and SCL and return ACK
