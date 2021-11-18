@@ -48,11 +48,13 @@ void setup()
   Serial.begin(9600);
   Serial.print("Slave Address: ");
   Serial.println(SLAVE_ADDR);
-  sendSomeCommand();
+
+  pinMode(13, OUTPUT);
 }
 
 void loop()
 {
+  sendSomeCommand();
 }
 
 void SDA_Handler(void)
@@ -79,6 +81,9 @@ void SM_Update(Signal_t src)
   switch (state)
   {
   case WAIT_FOR_START:
+    bitCount = 0;
+    recv_idx = 0;
+    
     if (src == SIGNAL_SDA)
     {
       //Start condition satisfied
@@ -144,7 +149,7 @@ void SM_Update(Signal_t src)
     {
       //Stop condition satisfied
       if (sclLevel == HIGH && sdaLevel == HIGH)
-      {
+      { 
         state = WAIT_FOR_START;
 
         Serial.println("received:");
@@ -154,6 +159,7 @@ void SM_Update(Signal_t src)
           Serial.print(recv[i], HEX);
           Serial.print(' ');
         }
+        Serial.println(' ');
 
         recv_idx = 0;
       }
@@ -242,7 +248,6 @@ void sendSomeCommand(void)
 
 int ReadByte(void)
 {
-  while (Serial.available() == 0)
-    ;
+  while (Serial.available() == 0);
   return Serial.read();
 }
